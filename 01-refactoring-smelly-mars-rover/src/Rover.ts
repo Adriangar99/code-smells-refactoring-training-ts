@@ -1,12 +1,20 @@
+import { Direction } from "./Direction";
+
 export class Rover {
   private direction: string;
   private y: number;
   private x: number;
+  private direction2: Direction;
 
   constructor(x: number, y: number, direction: string) {
     this.x = x;
     this.y = y;
+    this.setDirection(direction);
+  }
+
+  private setDirection(direction: string) {
     this.direction = direction;
+    this.direction2 = direction as any as Direction;
   }
 
   public receive(commandsSequence: string) {
@@ -26,11 +34,11 @@ export class Rover {
         }
         let displacement = displacement1;
 
-        if (this.direction === "N") {
+        if (this.isFacingNorth()) {
           this.y += displacement;
-        } else if (this.direction === "S") {
+        } else if (this.isFacingSouth()) {
           this.y -= displacement;
-        } else if (this.direction === "W") {
+        } else if (this.isFacingWest(this.direction2)) {
           this.x -= displacement;
         } else {
           this.x += displacement;
@@ -39,27 +47,39 @@ export class Rover {
     }
   }
 
+  private isFacingWest(direction: Direction) {
+    return direction === Direction.W;
+  }
+
+  private isFacingSouth() {
+    return this.direction2 === Direction.S;
+  }
+
+  private isFacingNorth() {
+    return this.direction2 === Direction.N;
+  }
+
   private rotateLeft() {
-    if (this.direction === "N") {
-      this.direction = "W";
-    } else if (this.direction === "S") {
-      this.direction = "E";
-    } else if (this.direction === "W") {
-      this.direction = "S";
+    if (this.isFacingNorth()) {
+      this.setDirection("W");
+    } else if (this.isFacingSouth()) {
+      this.setDirection("E");
+    } else if (this.isFacingWest(this.direction2)) {
+      this.setDirection("S");
     } else {
-      this.direction = "N";
+      this.setDirection("N");
     }
   }
 
-  rotateRight() {
-    if (this.direction === "N") {
-      this.direction = "E";
-    } else if (this.direction === "S") {
-      this.direction = "W";
-    } else if (this.direction === "W") {
-      this.direction = "N";
+  private rotateRight() {
+    if (this.isFacingNorth()) {
+      this.setDirection("E");
+    } else if (this.isFacingSouth()) {
+      this.setDirection("W");
+    } else if (this.isFacingWest(this.direction2)) {
+      this.setDirection("N");
     } else {
-      this.direction = "S";
+      this.setDirection("S");
     }
   }
 }
