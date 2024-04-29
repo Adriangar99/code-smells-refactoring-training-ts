@@ -13,33 +13,10 @@ export class Rover {
     for (let i = 0; i < commandsSequence.length; ++i) {
       const command = commandsSequence.substring(i, i + 1);
 
-      if (command === "l" || command === "r") {
-        // Rotate Rover
-        if (this.direction === "N") {
-          if (command === "r") {
-            this.direction = "E";
-          } else {
-            this.direction = "W";
-          }
-        } else if (this.direction === "S") {
-          if (command === "r") {
-            this.direction = "W";
-          } else {
-            this.direction = "E";
-          }
-        } else if (this.direction === "W") {
-          if (command === "r") {
-            this.direction = "N";
-          } else {
-            this.direction = "S";
-          }
-        } else {
-          if (command === "r") {
-            this.direction = "S";
-          } else {
-            this.direction = "N";
-          }
-        }
+      if (command === "l") {
+        this.rotateLeft();
+      } else if (command === "r") {
+        this.rotateRight();
       } else {
         // Displace Rover
         let displacement1 = -1;
@@ -59,6 +36,30 @@ export class Rover {
           this.x += displacement;
         }
       }
+    }
+  }
+
+  private rotateLeft() {
+    if (this.direction === "N") {
+      this.direction = "W";
+    } else if (this.direction === "S") {
+      this.direction = "E";
+    } else if (this.direction === "W") {
+      this.direction = "S";
+    } else {
+      this.direction = "N";
+    }
+  }
+
+  rotateRight() {
+    if (this.direction === "N") {
+      this.direction = "E";
+    } else if (this.direction === "S") {
+      this.direction = "W";
+    } else if (this.direction === "W") {
+      this.direction = "N";
+    } else {
+      this.direction = "S";
     }
   }
 }
